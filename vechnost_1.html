@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ВЕЧНОСТЬ — Роман</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Raleway:ital,wght@0,300;0,400;0,500;1,300&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --neon: #c8e832;
+    --neon-dim: rgba(200,232,50,0.35);
+    --neon-glow: rgba(200,232,50,0.15);
+    --bg: #020810;
+    --bg2: #070f1a;
+    --bg3: #040c14;
+    --text: #e0eeff;
+    --text-dim: rgba(200,225,255,0.5);
+    --text-faint: rgba(200,225,255,0.25);
+    --border: rgba(200,232,50,0.12);
+    --border-hover: rgba(200,232,50,0.4);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* RAIN CANVAS */
+  #rain-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.18;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 48px;
+    background: rgba(2,8,16,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .nav-logo {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--neon);
+    letter-spacing: 0.2em;
+    text-shadow: 0 0 20px rgba(200,232,50,0.5);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-decoration: none;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--neon); }
+
+  .btn-nav {
+    font-family: 'Raleway', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--bg);
+    background: var(--neon);
+    border: none;
+    border-radius: 3px;
+    padding: 9px 20px;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    transition: opacity 0.2s, box-shadow 0.2s;
+  }
+
+  .btn-nav:hover {
+    opacity: 0.9;
+    box-shadow: 0 0 20px rgba(200,232,50,0.4);
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .hero-atmosphere {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 70% 40%, rgba(10,30,10,0.8) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 30% 60%, rgba(2,15,30,0.6) 0%, transparent 70%);
+    z-index: 0;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    align-items: center;
+    padding: 80px 48px;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 580px;
+    animation: fadeUp 1s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    color: var(--neon);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0.8;
+  }
+
+  .hero-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(56px, 8vw, 90px);
+    font-weight: 900;
+    line-height: 0.9;
+    color: var(--neon);
+    text-shadow:
+      0 0 40px rgba(200,232,50,0.6),
+      0 0 80px rgba(200,232,50,0.2),
+      0 0 120px rgba(200,232,50,0.1);
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+    animation: flicker 8s ease-in-out infinite;
+  }
+
+  @keyframes flicker {
+    0%, 95%, 100% { opacity: 1; }
+    96% { opacity: 0.85; }
+    97% { opacity: 1; }
+    98% { opacity: 0.9; }
+    99% { opacity: 1; }
+  }
+
+  .hero-subtitle {
+    font-size: 13px;
+    color: var(--text-faint);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+    font-weight: 300;
+  }
+
+  .hero-desc {
+    font-family: 'EB Garamond', serif;
+    font-size: 19px;
+    line-height: 1.8;
+    color: rgba(200,225,255,0.6);
+    margin-bottom: 44px;
+    max-width: 420px;
+    font-style: italic;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .btn-primary {
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--bg);
+    background: var(--neon);
+    border: none;
+    border-radius: 3px;
+    padding: 15px 32px;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 30px rgba(200,232,50,0.5);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(200,232,50,0.75);
+    background: transparent;
+    border: 1px solid var(--neon-dim);
+    border-radius: 3px;
+    padding: 14px 28px;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    transition: all 0.2s;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--neon);
+    color: var(--neon);
+    box-shadow: inset 0 0 20px rgba(200,232,50,0.05);
+  }
+
+  .hero-hint {
+    font-size: 12px;
+    color: var(--text-faint);
+    letter-spacing: 0.05em;
+  }
+
+  /* HERO VISUAL */
+  .hero-visual {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .book-mockup {
+    position: relative;
+    width: 280px;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+
+  .book-cover {
+    width: 100%;
+    background: #030c18;
+    border: 1px solid rgba(200,232,50,0.2);
+    border-radius: 4px 12px 12px 4px;
+    padding: 40px 32px;
+    text-align: center;
+    box-shadow:
+      -8px 0 0 rgba(0,0,0,0.5),
+      0 0 60px rgba(200,232,50,0.1),
+      0 0 120px rgba(200,232,50,0.05);
+  }
+
+  .book-cover-neon {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--neon);
+    text-shadow: 0 0 20px rgba(200,232,50,0.8), 0 0 40px rgba(200,232,50,0.4);
+    letter-spacing: 0.1em;
+    margin-bottom: 24px;
+    animation: flicker 8s ease-in-out infinite;
+  }
+
+  .book-cover-scene {
+    width: 100%;
+    height: 160px;
+    background: #020810;
+    border: 1px solid rgba(200,232,50,0.08);
+    border-radius: 2px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .scene-figure {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-60%);
+    width: 40px;
+    height: 90px;
+    background: #0a1824;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .scene-figure-hood {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(20%);
+    width: 60px;
+    height: 60px;
+    background: #050e1a;
+    border-radius: 50% 50% 0 0;
+  }
+
+  .scene-eyes {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(14%);
+    display: flex;
+    gap: 10px;
+  }
+
+  .scene-eye {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--neon);
+    box-shadow: 0 0 8px var(--neon), 0 0 16px rgba(200,232,50,0.6);
+    animation: blink 4s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 90%, 100% { opacity: 1; }
+    95% { opacity: 0; }
+  }
+
+  .scene-bar {
+    position: absolute;
+    bottom: 20px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: rgba(200,232,50,0.15);
+  }
+
+  .scene-glass {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-120%);
+    width: 10px;
+    height: 16px;
+    background: rgba(100,200,80,0.3);
+    border: 1px solid rgba(100,200,80,0.5);
+    border-radius: 1px;
+    box-shadow: 0 0 8px rgba(100,200,80,0.4);
+  }
+
+  .book-cover-quote {
+    font-family: 'EB Garamond', serif;
+    font-size: 12px;
+    font-style: italic;
+    color: var(--text-faint);
+    line-height: 1.6;
+  }
+
+  /* TRUST STRIP */
+  .trust-strip {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: rgba(200,232,50,0.02);
+  }
+
+  .trust-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px 16px;
+    border-right: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+
+  .trust-item:last-child { border-right: none; }
+  .trust-item:hover { background: rgba(200,232,50,0.04); }
+
+  .trust-icon {
+    font-size: 18px;
+    color: rgba(200,232,50,0.5);
+  }
+
+  .trust-text {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+
+  /* SECTIONS */
+  section {
+    position: relative;
+    z-index: 2;
+    padding: 72px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+  }
+
+  .section-label,
+  .section-title,
+  .section-sub {
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    color: rgba(200,232,50,0.55);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  .section-sub {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 36px;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* READER DEMO */
+  .reader-wrap {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .reader-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .reader-bar-info {
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.08em;
+  }
+
+  .reader-bar-icons {
+    display: flex;
+    gap: 14px;
+  }
+
+  .rbi {
+    font-size: 16px;
+    color: rgba(200,232,50,0.35);
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .rbi:hover { color: var(--neon); }
+
+  .reader-body {
+    padding: 48px 56px;
+    background: var(--bg2);
+  }
+
+  .ch-eyebrow {
+    font-size: 10px;
+    color: rgba(200,232,50,0.4);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .ch-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--neon);
+    margin-bottom: 32px;
+    text-shadow: 0 0 20px rgba(200,232,50,0.2);
+  }
+
+  .book-p {
+    font-family: 'EB Garamond', serif;
+    font-size: 18px;
+    line-height: 2;
+    color: rgba(210,235,255,0.7);
+    margin-bottom: 22px;
+  }
+
+  .book-p:first-of-type::first-letter {
+    float: left;
+    font-size: 58px;
+    line-height: 0.8;
+    margin: 6px 10px 0 0;
+    color: var(--neon);
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 900;
+    text-shadow: 0 0 20px rgba(200,232,50,0.4);
+  }
+
+  .book-em { color: rgba(200,232,50,0.7); font-style: italic; }
+
+  .reader-fade {
+    height: 80px;
+    background: linear-gradient(transparent, var(--bg2));
+    margin-top: -60px;
+    position: relative;
+  }
+
+  .paywall-block {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 32px 56px;
+    text-align: center;
+  }
+
+  .paywall-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--neon);
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(200,232,50,0.3);
+  }
+
+  .paywall-sub {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+    line-height: 1.7;
+  }
+
+  /* PRICING */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .price-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px;
+    transition: border-color 0.2s;
+  }
+
+  .price-card:hover { border-color: var(--border-hover); }
+
+  .price-card.featured {
+    border-color: rgba(200,232,50,0.45);
+    background: #080f1c;
+  }
+
+  .price-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--bg);
+    background: var(--neon);
+    border-radius: 3px;
+    padding: 3px 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .price-name {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .price-amount {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--neon);
+    margin-bottom: 6px;
+    text-shadow: 0 0 20px rgba(200,232,50,0.3);
+  }
+
+  .price-amount sup {
+    font-size: 18px;
+    vertical-align: super;
+    font-weight: 400;
+  }
+
+  .price-desc {
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-bottom: 22px;
+    line-height: 1.7;
+  }
+
+  .features-list {
+    list-style: none;
+    margin-bottom: 26px;
+  }
+
+  .features-list li {
+    font-size: 13px;
+    color: var(--text-dim);
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(200,232,50,0.05);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .features-list li:last-child { border-bottom: none; }
+
+  .fi { font-size: 14px; color: var(--neon); }
+  .fi-off { font-size: 14px; color: var(--text-faint); }
+  .fi-off ~ span { opacity: 0.35; }
+
+  .price-btn {
+    width: 100%;
+    font-family: 'Raleway', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    transition: all 0.2s;
+  }
+
+  .price-btn-outline {
+    background: transparent;
+    color: rgba(200,232,50,0.7);
+    border: 1px solid var(--neon-dim);
+  }
+
+  .price-btn-outline:hover {
+    border-color: var(--neon);
+    color: var(--neon);
+  }
+
+  .price-btn-solid {
+    background: var(--neon);
+    color: var(--bg);
+    border: 1px solid var(--neon);
+  }
+
+  .price-btn-solid:hover {
+    box-shadow: 0 0 24px rgba(200,232,50,0.4);
+    transform: translateY(-1px);
+  }
+
+  /* 10 DOORS */
+  .doors-section {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .doors-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    width: 100%;
+    max-width: 800px;
+  }
+
+  .door-card {
+    background: var(--bg);
+    border: 1px solid rgba(200,232,50,0.1);
+    border-radius: 6px;
+    padding: 18px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .door-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(200,232,50,0.03);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .door-card:hover::before { opacity: 1; }
+  .door-card:hover { border-color: rgba(200,232,50,0.4); transform: translateY(-3px); }
+
+  .door-num {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: rgba(200,232,50,0.2);
+    margin-bottom: 8px;
+    transition: color 0.2s, text-shadow 0.2s;
+  }
+
+  .door-card:hover .door-num {
+    color: var(--neon);
+    text-shadow: 0 0 16px rgba(200,232,50,0.5);
+  }
+
+  .door-name {
+    font-size: 11px;
+    color: var(--text-faint);
+    line-height: 1.5;
+    transition: color 0.2s;
+  }
+
+  .door-card:hover .door-name { color: var(--text-dim); }
+
+  /* REVIEWS */
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    width: 100%;
+    max-width: 720px;
+    margin-bottom: 24px;
+  }
+
+  .review-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 22px;
+    transition: border-color 0.2s;
+  }
+
+  .review-card:hover { border-color: var(--border-hover); }
+
+  .review-text {
+    font-family: 'EB Garamond', serif;
+    font-size: 15px;
+    font-style: italic;
+    color: rgba(200,225,255,0.55);
+    line-height: 1.8;
+    margin-bottom: 18px;
+  }
+
+  .review-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .review-ava {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(200,232,50,0.1);
+    border: 1px solid var(--neon-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--neon);
+    flex-shrink: 0;
+  }
+
+  .review-name {
+    font-size: 12px;
+    color: var(--text-faint);
+  }
+
+  .tg-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: rgba(200,232,50,0.45);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(200,232,50,0.15);
+    border-radius: 3px;
+    padding: 8px 16px;
+    transition: all 0.2s;
+  }
+
+  .tg-cta:hover {
+    color: var(--neon);
+    border-color: var(--neon-dim);
+  }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 2;
+    padding: 28px 48px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(2,8,16,0.8);
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  .footer-logo {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--neon);
+    letter-spacing: 0.2em;
+    text-shadow: 0 0 16px rgba(200,232,50,0.4);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-links a {
+    font-size: 11px;
+    color: var(--text-faint);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--neon); }
+
+  .footer-copy {
+    font-size: 11px;
+    color: var(--text-faint);
+  }
+
+  /* ICONS (inline SVG as data) */
+  .ico {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    .nav-links { display: none; }
+    .hero-content { padding: 60px 20px; max-width: 100%; }
+    .hero-visual { display: none; }
+    section { padding: 48px 20px; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .doors-grid { grid-template-columns: repeat(2, 1fr); }
+    .reviews-grid { grid-template-columns: 1fr; }
+    .reader-body { padding: 32px 24px; }
+    .paywall-block { padding: 28px 24px; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+    .trust-text { font-size: 11px; }
+    .trust-item { padding: 14px 8px; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="rain-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+  <div class="nav-logo">ВЕЧНОСТЬ</div>
+  <ul class="nav-links">
+    <li><a href="#demo">Читать</a></li>
+    <li><a href="#doors">10 дверей</a></li>
+    <li><a href="#pricing">Доступ</a></li>
+    <li><a href="#reviews">Отзывы</a></li>
+  </ul>
+  <button class="btn-nav" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Купить доступ</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-atmosphere"></div>
+
+  <div class="hero-inner">
+  <div class="hero-content">
+    <div class="hero-eyebrow">Роман · 2025 · Русский язык</div>
+    <h1 class="hero-title">ВЕЧНОСТЬ</h1>
+    <div class="hero-subtitle">Бар на краю всего</div>
+    <p class="hero-desc">Антон заходит в бар. Жрец предлагает испытания. За окном — дождь и ночь без конца. Что это — жизнь, смерть или что-то между?</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">Читать бесплатно</button>
+      <button class="btn-ghost" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Купить · 19 €</button>
+    </div>
+    <div class="hero-hint">Первые 2 главы — бесплатно · Без регистрации</div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="book-mockup">
+      <div class="book-cover">
+        <div class="book-cover-neon">ВЕЧНОСТЬ</div>
+        <div class="book-cover-scene">
+          <div class="scene-figure">
+            <div class="scene-figure-hood">
+              <div class="scene-eyes">
+                <div class="scene-eye"></div>
+                <div class="scene-eye"></div>
+              </div>
+            </div>
+          </div>
+          <div class="scene-bar"></div>
+          <div class="scene-glass"></div>
+        </div>
+        <div class="book-cover-quote">«Первый шаг в жизнь — или последний в вечность»</div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- TRUST -->
+<div class="trust-strip">
+  <div class="trust-item">
+    <svg class="trust-icon ico" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+    <span class="trust-text">25 иллюстраций</span>
+  </div>
+  <div class="trust-item">
+    <svg class="trust-icon ico" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    <span class="trust-text">Саундтрек в тексте</span>
+  </div>
+  <div class="trust-item">
+    <svg class="trust-icon ico" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9"/></svg>
+    <span class="trust-text">10 дверей финала</span>
+  </div>
+  <div class="trust-item">
+    <svg class="trust-icon ico" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+    <span class="trust-text">Читать с любого устройства</span>
+  </div>
+  <div class="trust-item">
+    <svg class="trust-icon ico" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    <span class="trust-text">3 языка</span>
+  </div>
+</div>
+
+<!-- DEMO READER -->
+<section id="demo">
+  <div class="section-label">Демо</div>
+  <h2 class="section-title">Почувствуй книгу</h2>
+  <p class="section-sub">Первые две главы — бесплатно. Без регистрации.</p>
+  <div class="reader-wrap">
+    <div class="reader-bar">
+      <span class="reader-bar-info">Глава I · Бар «Вечность» · стр. 1</span>
+      <div class="reader-bar-icons">
+        <svg class="rbi ico" viewBox="0 0 24 24" title="Ночной режим"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        <svg class="rbi ico" viewBox="0 0 24 24" title="Закладка"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+        <svg class="rbi ico" viewBox="0 0 24 24" title="Настройки"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      </div>
+    </div>
+    <div class="reader-body">
+      <div class="ch-eyebrow">Глава первая</div>
+      <div class="ch-title">Бар «Вечность»</div>
+      <p class="book-p">Дождь шёл уже третий день подряд. Антон стоял перед дверью — тяжёлой, из тёмного дерева — и читал вывеску. Жёлтые буквы горели сквозь пелену воды: <span class="book-em">ВЕЧНОСТЬ</span>. Он мог поклясться, что раньше здесь ничего не было. Пустой угол улицы, мокрый асфальт, фонарь с перегоревшей лампой.</p>
+      <p class="book-p">Внутри было темно и тихо. За стойкой стоял человек в капюшоне. Или что-то, похожее на человека. Глаза светились — точь-в-точь как вывеска снаружи. Зелёный, холодный свет. Антон сделал шаг вперёд.</p>
+      <p class="book-p">— Ты пришёл, — сказал Жрец. Это не был вопрос.</p>
+    </div>
+    <div class="reader-fade"></div>
+    <div class="paywall-block">
+      <div class="paywall-title">Продолжение — за дверью</div>
+      <p class="paywall-sub">Полный текст · 25 иллюстраций · Саундтрек в каждой главе · 10 дверей финала</p>
+      <button class="btn-primary" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Открыть доступ · 19 €</button>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-label">Доступ</div>
+  <h2 class="section-title">Выбери свою версию</h2>
+  <p class="section-sub">Базовый доступ к книге или полное погружение в мир Вечности.</p>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-name">Базовый доступ</div>
+      <div class="price-amount"><sup>€</sup>19</div>
+      <p class="price-desc">Книга целиком + все иллюстрации + саундтрек прямо в тексте</p>
+      <ul class="features-list">
+        <li><svg class="fi ico" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Полный текст книги</span></li>
+        <li><svg class="fi ico" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>25 иллюстраций</span></li>
+        <li><svg class="fi ico" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Кнопки саундтрека в тексте</span></li>
+        <li><svg class="fi ico" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>10 дверей финала — анонс</span></li>
+        <li><svg class="fi-off ico" viewBox="0 0 24 24" style="color:var(--text-faint)"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><span>Разбор финала с цитатами</span></li>
+        <li><svg class="fi-off ico" viewBox="0 0 24 24" style="color:var(--text-faint)"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><span>Тайна Жреца</span></li>
+      </ul>
+      <button class="price-btn price-btn-outline">Купить базовый</button>
+    </div>
+    <div class="price-card featured">
+      <div class="price-badge">Полное погружение</div>
+      <div class="price-name">Базовый + Погружение</div>
+      <div class="price-amount"><sup>€</sup>33</div>
+      <p class="price-desc">Всё из базового + эксклюзивный контент для настоящих фанатов Вечности</p>
+      <ul class="features-list">
+        <li><svg class="fi ico" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Всё из базового</span></li>
+        <li><svg class="fi ico" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>10 дверей — полный разбор</span></li>
+        <li><svg class="fi ico" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Цитатник Вечности</span></li>
+        <li><svg class="fi ico" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Плейлист Spotify / Яндекс</span></li>
+        <li><svg class="fi ico" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Глава, не вошедшая в книгу</span></li>
+        <li><svg class="fi ico" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Тайна Жреца</span></li>
+      </ul>
+      <button class="price-btn price-btn-solid">Полное погружение</button>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- 10 DOORS -->
+<section id="doors" class="doors-section">
+  <div class="section-label">После прочтения</div>
+  <h2 class="section-title">10 дверей финала</h2>
+  <p class="section-sub">Что случилось на самом деле? Выбери версию — и допиши историю сам.</p>
+  <div class="doors-grid">
+    <div class="door-card"><div class="door-num">I</div><div class="door-name">Он умер в квартире</div></div>
+    <div class="door-card"><div class="door-num">II</div><div class="door-name">Чистилище</div></div>
+    <div class="door-card"><div class="door-num">III</div><div class="door-name">Сон разума</div></div>
+    <div class="door-card"><div class="door-num">IV</div><div class="door-name">Параллельный мир</div></div>
+    <div class="door-card"><div class="door-num">V</div><div class="door-name">Он выжил</div></div>
+    <div class="door-card"><div class="door-num">VI</div><div class="door-name">Симуляция</div></div>
+    <div class="door-card"><div class="door-num">VII</div><div class="door-name">Мира — часть него</div></div>
+    <div class="door-card"><div class="door-num">VIII</div><div class="door-name">Жрец — это он</div></div>
+    <div class="door-card"><div class="door-num">IX</div><div class="door-name">Петля времени</div></div>
+    <div class="door-card"><div class="door-num">X</div><div class="door-name">Открытый финал</div></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="section-label">Люди о Вечности</div>
+  <h2 class="section-title">Что говорят первые читатели</h2>
+  <p class="section-sub">Живые отзывы из Telegram-группы.</p>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <p class="review-text">«Дочитал за одну ночь. Не мог остановиться — каждое испытание затягивало сильнее предыдущего. Финал просто снёс крышу.»</p>
+      <div class="review-author"><div class="review-ava">АК</div><div class="review-name">Алексей К. · Telegram</div></div>
+    </div>
+    <div class="review-card">
+      <p class="review-text">«Это не просто книга. Это опыт. Жрец — один из лучших персонажей, что я встречала в русской литературе за последние годы.»</p>
+      <div class="review-author"><div class="review-ava">МС</div><div class="review-name">Мария С. · Telegram</div></div>
+    </div>
+    <div class="review-card">
+      <p class="review-text">«Иллюстрации попадают прямо в сердце. Читаешь — и будто сам сидишь в этом баре под неоновой вывеской под дождём.»</p>
+      <div class="review-author"><div class="review-ava">ДВ</div><div class="review-name">Дмитрий В. · Telegram</div></div>
+    </div>
+    <div class="review-card">
+      <p class="review-text">«10 дверей финала — гениальная задумка. Перечитал трижды. Каждый раз выбирал другую версию — и каждая ощущается как своя правда.»</p>
+      <div class="review-author"><div class="review-ava">НП</div><div class="review-name">Никита П. · Telegram</div></div>
+    </div>
+  </div>
+  <a href="#" class="tg-cta">
+    <svg class="ico" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M21.198 2.433a2.242 2.242 0 00-1.022.215l-16.5 6.666a2.25 2.25 0 00.126 4.238l3.553 1.12 1.763 5.29a.75.75 0 001.38.127l2.3-3.833 4.532 3.393a2.25 2.25 0 003.51-1.51l2.75-13.5a2.25 2.25 0 00-2.392-2.206z"/></svg>
+    Все отзывы в Telegram-группе
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+  <div class="footer-logo">ВЕЧНОСТЬ</div>
+  <div class="footer-links">
+    <a href="#">Политика конфиденциальности</a>
+    <a href="#">Поддержка</a>
+    <a href="#">Об авторе</a>
+  </div>
+  <div class="footer-copy">© 2025 · Все права защищены</div>
+  </div>
+</footer>
+
+<script>
+// RAIN ANIMATION
+const canvas = document.getElementById('rain-canvas');
+const ctx = canvas.getContext('2d');
+let drops = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function initDrops() {
+  drops = [];
+  for (let i = 0; i < 120; i++) {
+    drops.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      len: Math.random() * 18 + 6,
+      speed: Math.random() * 3 + 2,
+      opacity: Math.random() * 0.4 + 0.05,
+      width: Math.random() * 0.5 + 0.2
+    });
+  }
+}
+
+function drawRain() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drops.forEach(d => {
+    ctx.beginPath();
+    ctx.moveTo(d.x, d.y);
+    ctx.lineTo(d.x - d.len * 0.15, d.y + d.len);
+    ctx.strokeStyle = `rgba(180,220,255,${d.opacity})`;
+    ctx.lineWidth = d.width;
+    ctx.stroke();
+    d.y += d.speed;
+    d.x -= d.speed * 0.15;
+    if (d.y > canvas.height) {
+      d.y = -d.len;
+      d.x = Math.random() * canvas.width;
+    }
+  });
+  requestAnimationFrame(drawRain);
+}
+
+window.addEventListener('resize', () => { resize(); initDrops(); });
+resize();
+initDrops();
+drawRain();
+
+// SCROLL REVEAL
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('section, .trust-strip').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+  observer.observe(el);
+});
+
+// DOOR HOVER TOOLTIP
+document.querySelectorAll('.door-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>
