@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  background: #000;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #000;
+}
+
+.section {
+  width: 100%;
+  max-width: 1280px;
+  background: #000;
+}
+
+.section img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 1280px) {
+  .section {
+    max-width: 100%;
+  }
+}
