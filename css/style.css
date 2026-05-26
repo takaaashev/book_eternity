@@ -1,0 +1,90 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: #000;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background: #000;
+  color: #fff;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+}
+
+.site {
+  width: 100%;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.stage {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  background: #000;
+  line-height: 0;
+  box-shadow: 0 0 90px rgba(0, 0, 0, 0.95);
+}
+
+.scene {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+  background: #000;
+}
+
+.scene img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: top;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Кликабельная область поверх нарисованной кнопки в финальной секции */
+.cta-overlay {
+  position: absolute;
+  left: 5.1%;
+  top: 72.5%;
+  width: 23%;
+  height: 7.5%;
+  z-index: 5;
+  cursor: pointer;
+}
+
+/* Текст для SEO и доступности — визуально скрыт */
+.seo-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Desktop: макет 1280px по центру */
+@media (min-width: 1281px) {
+  .stage {
+    max-width: 1280px;
+  }
+}
+
+/* Tablet/mobile: пропорционально сжимается, без горизонтального скролла */
+@media (max-width: 1280px) {
+  .stage {
+    max-width: 100%;
+  }
+}
